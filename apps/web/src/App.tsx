@@ -1,16 +1,25 @@
-function App() {
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
+import LoginPage from './features/auth/LoginPage'
+import SignupPage from './features/auth/SignupPage'
+import FeedPage from './features/feed/FeedPage'
+import ProtectedRoute from './components/ProtectedRoute'
+
+export default function App() {
   return (
-    <div className="min-h-screen bg-stone-50 flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-stone-900 tracking-tight">
-          Porchlite
-        </h1>
-        <p className="mt-3 text-lg text-stone-500">
-          Leave the light on for your friends.
-        </p>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <FeedPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App
