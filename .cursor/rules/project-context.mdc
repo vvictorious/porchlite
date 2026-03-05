@@ -1,0 +1,44 @@
+---
+description: Porchlite project vision, architecture, and conventions
+alwaysApply: true
+---
+
+# Porchlite
+
+A private, blog-style social app for sharing life updates with close friends. No likes, no comments, no vanity metrics. When you post, your friends get notified so real conversations happen outside the app (text, email, WhatsApp).
+
+The name comes from leaving your porch light on — a signal that says "I'm here, come talk to me."
+
+## Tech Stack
+
+- **Monorepo**: Turborepo with npm workspaces
+- **Frontend**: React + TypeScript + Vite (`apps/web`)
+- **Styling**: Tailwind CSS v4 (Vite plugin, CSS-first config)
+- **State/Data**: Redux Toolkit + RTK Query (fakeBaseQuery with Supabase in queryFn)
+- **Backend/DB**: Supabase (Auth, Postgres, Storage, Edge Functions)
+- **Shared types**: `packages/shared` — shared TypeScript interfaces
+- **Email**: Supabase Edge Functions (eventually SMS too)
+
+## Architecture Decisions
+
+- **Mutual friendships** — both users must agree (like Facebook, not Instagram follows)
+- **RTK Query + fakeBaseQuery** — each endpoint calls Supabase directly in queryFn for explicitness
+- **No comments or likes** — the app encourages real conversation outside the platform
+- **Email notifications first** — when a friend posts, you get an email with a preview and link
+
+## Build Phases
+
+1. Project scaffolding (Turborepo, Vite, Tailwind, RTK Query) — DONE
+2. Supabase setup + auth (schema, sign up/login, protected routes)
+3. User profiles + friend system (mutual requests, friend list)
+4. Creating posts (text + photo upload, chronological feed)
+5. Email notifications (Edge Function triggered on new post)
+6. Polish + UX (responsive, loading/error/empty states, settings)
+
+## Conventions
+
+- Package names use `@porchlite/` scope (e.g. `@porchlite/web`, `@porchlite/shared`)
+- Feature code lives in `src/features/<name>/` with colocated API slices, components, and pages
+- The Supabase client is in `src/lib/supabase.ts`
+- Redux store config is in `src/app/store.ts`, base API slice in `src/app/api.ts`
+- The developer is learning Tailwind, RTK Query, and Supabase — explain the "why" behind patterns
