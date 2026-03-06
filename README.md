@@ -50,6 +50,21 @@ npx turbo dev
 
 The app will be available at **http://localhost:5173**.
 
+## Database Schema
+
+| Table | Purpose |
+|---|---|
+| `profiles` | User info (extends Supabase auth) — display name, avatar, bio |
+| `posts` | Text + optional image, linked to author |
+| `friendships` | Mutual friend requests with status (pending/accepted/declined) |
+
+All tables are protected by [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies. A database trigger auto-creates a profile when a new user signs up.
+
+## Deployment
+
+- **Frontend**: [Vercel](https://vercel.com/) (auto-deploys on push to main)
+- **Backend**: [Supabase](https://supabase.com/) (hosted)
+
 ## Core Concepts
 
 - **No vanity metrics** — no likes, no follower counts, no public comments
