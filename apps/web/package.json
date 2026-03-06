@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@porchlite/api": "*",
+    "@porchlite/shared": "*",
     "@reduxjs/toolkit": "^2.11.2",
     "@supabase/supabase-js": "^2.98.0",
     "@tailwindcss/vite": "^4.2.1",

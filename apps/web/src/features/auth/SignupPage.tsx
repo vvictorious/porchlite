@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '@porchlite/api'
 
-export default function SignupPage() {
+export const SignupPage = () => {
   const navigate = useNavigate()
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
@@ -10,12 +10,12 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
     setLoading(true)
 
-    const { error } = await supabase.auth.signUp({
+    const { error } = await getSupabase().auth.signUp({
       email,
       password,
       options: {

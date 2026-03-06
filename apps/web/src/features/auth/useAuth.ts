@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '@porchlite/api'
 
-/**
- * Listens to Supabase auth state and returns the current user.
- * - `user` is null when not logged in
- * - `loading` is true while we check the initial session
- */
-export function useAuth() {
+export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const supabase = getSupabase()
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
       setLoading(false)

@@ -16,7 +16,8 @@ The name comes from leaving your porch light on — a signal that says "I'm here
 - **Styling**: Tailwind CSS v4 (Vite plugin, CSS-first config)
 - **State/Data**: Redux Toolkit + RTK Query (fakeBaseQuery with Supabase in queryFn)
 - **Backend/DB**: Supabase (Auth, Postgres, Storage, Edge Functions)
-- **Shared types**: `packages/shared` — shared TypeScript interfaces
+- **Shared types**: `packages/shared` — shared TypeScript interfaces and mappers
+- **Shared API**: `packages/api` — RTK Query slices, Supabase client (shared across web + future mobile)
 - **Email**: Supabase Edge Functions (eventually SMS too)
 
 ## Architecture Decisions
@@ -26,6 +27,7 @@ The name comes from leaving your porch light on — a signal that says "I'm here
 - **No comments or likes** — the app encourages real conversation outside the platform
 - **Email notifications first** — when a friend posts, you get an email with a preview and link
 - **snake_case in DB/API, camelCase in frontend** — Supabase/Postgres uses snake_case; mapper functions in `packages/shared/src/mappers.ts` convert to camelCase at the RTK Query boundary
+- **Injectable Supabase client** — `initSupabase(url, key)` called at app startup; `getSupabase()` used in API slices. This allows web and mobile to use the same API code with different env var mechanisms.
 - **Row Level Security (RLS)** — Supabase enforces permissions at the database level; no custom backend needed
 - **Auto-profile trigger** — a Postgres trigger creates a `profiles` row when a user signs up via Supabase Auth
 
@@ -38,7 +40,7 @@ The name comes from leaving your porch light on — a signal that says "I'm here
 
 1. Project scaffolding (Turborepo, Vite, Tailwind, RTK Query) — DONE
 2. Supabase setup + auth (schema, sign up/login, protected routes) — DONE
-3. User profiles + friend system (mutual requests, friend list)
+3. User profiles + friend system (mutual requests, friend list) — DONE
 4. Creating posts (text + photo upload, chronological feed)
 5. Email notifications (Edge Function triggered on new post)
 6. Polish + UX (responsive, loading/error/empty states, settings)
@@ -51,12 +53,14 @@ The name comes from leaving your porch light on — a signal that says "I'm here
 
 ## Conventions
 
-- Package names use `@porchlite/` scope (e.g. `@porchlite/web`, `@porchlite/shared`)
-- Feature code lives in `src/features/<name>/` with colocated API slices, components, and pages
-- The Supabase client is in `src/lib/supabase.ts`
-- Redux store config is in `src/app/store.ts`, base API slice in `src/app/api.ts`
-- Typed hooks in `src/app/hooks.ts` (`useAppDispatch`, `useAppSelector`)
-- Auth state via `useAuth()` hook in `src/features/auth/useAuth.ts`
+- Package names use `@porchlite/` scope (`@porchlite/web`, `@porchlite/shared`, `@porchlite/api`)
+- Feature UI lives in `apps/web/src/features/<name>/` with colocated components and pages
+- API slices live in `packages/api/src/` — shared across apps, endpoints injected via `api.injectEndpoints()`
+- Supabase client initialized in app entry (`initSupabase()`), accessed via `getSupabase()` in API slices
+- Redux store config is in `apps/web/src/app/store.ts`
+- Typed hooks in `apps/web/src/app/hooks.ts` (`useAppDispatch`, `useAppSelector`)
+- Auth state via `useAuth()` hook in `apps/web/src/features/auth/useAuth.ts`
 - Shared types (camelCase) and DB types (snake_case, prefixed `Db`) in `packages/shared/src/types.ts`
 - Mapper functions (`mapUser`, `mapPost`, `mapFriendship`) in `packages/shared/src/mappers.ts`
+- Always use arrow functions (see `.cursor/rules/code-style.mdc`)
 - The developer is learning Tailwind, RTK Query, and Supabase — explain the "why" behind patterns
