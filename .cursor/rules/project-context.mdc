@@ -25,6 +25,7 @@ The name comes from leaving your porch light on — a signal that says "I'm here
 - **Mutual friendships** — both users must agree (like Facebook, not Instagram follows)
 - **RTK Query + fakeBaseQuery** — each endpoint calls Supabase directly in queryFn for explicitness
 - **No comments or likes** — the app encourages real conversation outside the platform
+- **Block-based posts** — a post is an ordered array of blocks (`{ type: 'text', content: string }` or `{ type: 'image', url: string }`), stored as JSONB. No title — keeps it casual and low-pressure. Supports interleaved text and images (Medium-like) without a rich text editor.
 - **Email notifications first** — when a friend posts, you get an email with a preview and link
 - **snake_case in DB/API, camelCase in frontend** — Supabase/Postgres uses snake_case; mapper functions in `packages/shared/src/mappers.ts` convert to camelCase at the RTK Query boundary
 - **Injectable Supabase client** — `initSupabase(url, key)` called at app startup; `getSupabase()` used in API slices. This allows web and mobile to use the same API code with different env var mechanisms.
@@ -41,14 +42,14 @@ The name comes from leaving your porch light on — a signal that says "I'm here
 1. Project scaffolding (Turborepo, Vite, Tailwind, RTK Query) — DONE
 2. Supabase setup + auth (schema, sign up/login, protected routes) — DONE
 3. User profiles + friend system (mutual requests, friend list) — DONE
-4. Creating posts (text + photo upload, chronological feed)
+4. Creating posts (block-based content, image upload, feed) — UP NEXT
 5. Email notifications (Edge Function triggered on new post)
 6. Polish + UX (responsive, loading/error/empty states, settings)
 
 ## Database Tables
 
 - **profiles** — extends auth.users (id, email, display_name, avatar_url, bio, created_at)
-- **posts** — user content (id, author_id, text, image_url, created_at)
+- **posts** — user content (id, author_id, content JSONB, created_at). Content is an array of blocks: `[{ type: 'text', content: '...' }, { type: 'image', url: '...' }]`. No title column.
 - **friendships** — mutual connections (id, requester_id, addressee_id, status, created_at)
 
 ## Conventions
