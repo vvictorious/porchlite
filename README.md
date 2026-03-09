@@ -21,7 +21,8 @@ porchlite/
 ├── apps/
 │   └── web/              # React frontend
 ├── packages/
-│   └── shared/           # Shared TypeScript types and utilities
+│   ├── api/              # RTK Query slices + Supabase client
+│   └── shared/           # Shared TypeScript types and mappers
 ├── package.json          # Root workspace config
 ├── turbo.json            # Turborepo task pipeline
 └── tsconfig.base.json    # Shared TypeScript config
@@ -55,7 +56,7 @@ The app will be available at **http://localhost:5173**.
 | Table | Purpose |
 |---|---|
 | `profiles` | User info (extends Supabase auth) — display name, avatar, bio |
-| `posts` | Text + optional image, linked to author |
+| `posts` | Block-based content (JSONB array of text/image blocks), linked to author |
 | `friendships` | Mutual friend requests with status (pending/accepted/declined) |
 
 All tables are protected by [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) policies. A database trigger auto-creates a profile when a new user signs up.
