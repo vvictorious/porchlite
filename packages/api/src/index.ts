@@ -11,3 +11,11 @@ export {
   useSendFriendRequestMutation,
   useRespondToRequestMutation,
 } from './friendsApi'
+
+export {
+  postsApi,
+  useGetFeedQuery,
+  useCreatePostMutation,
+  useDeletePostMutation,
+  useUploadPostImageMutation,
+} from './postsApi'

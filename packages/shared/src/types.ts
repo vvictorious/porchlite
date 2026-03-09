@@ -8,11 +8,23 @@ export interface User {
   createdAt: string
 }
 
+// Block types for post content
+export interface TextBlock {
+  type: 'text'
+  content: string
+}
+
+export interface ImageBlock {
+  type: 'image'
+  url: string
+}
+
+export type PostBlock = TextBlock | ImageBlock
+
 export interface Post {
   id: string
   authorId: string
-  text: string
-  imageUrl: string | null
+  content: PostBlock[]
   createdAt: string
   author?: User
 }
@@ -40,8 +52,7 @@ export interface DbUser {
 export interface DbPost {
   id: string
   author_id: string
-  text: string
-  image_url: string | null
+  content: PostBlock[]
   created_at: string
 }
 
