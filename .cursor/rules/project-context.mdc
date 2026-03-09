@@ -42,8 +42,8 @@ The name comes from leaving your porch light on — a signal that says "I'm here
 1. Project scaffolding (Turborepo, Vite, Tailwind, RTK Query) — DONE
 2. Supabase setup + auth (schema, sign up/login, protected routes) — DONE
 3. User profiles + friend system (mutual requests, friend list) — DONE
-4. Creating posts (block-based content, image upload, feed) — UP NEXT
-5. Email notifications (Edge Function triggered on new post)
+4. Creating posts (block-based content, image upload, feed) — DONE
+5. Email notifications (Edge Function triggered on new post) — UP NEXT
 6. Polish + UX (responsive, loading/error/empty states, settings)
 
 ## Database Tables
