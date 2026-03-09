@@ -1,0 +1,10 @@
+---
+description: Git workflow preferences — the developer handles all git operations
+alwaysApply: true
+---
+
+# Git Workflow
+
+- Do NOT run `git add`, `git commit`, `git push`, or any other git write operations unless the user explicitly asks
+- The developer prefers to handle all git work (staging, committing, pushing) themselves in the terminal
+- It's fine to run read-only git commands (`git status`, `git log`, `git diff`) when needed for context
